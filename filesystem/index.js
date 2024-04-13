@@ -26,7 +26,7 @@ const runFSActions = async () => {
       path.join(__dirname, "files", "renamedNewStarter.txt")
     );
     const newData = await fsPromises.readFile(
-      path.join(__dirname, "files", "starter.txt"),
+      path.join(__dirname, "files", "starterPromiseRenamed.txt"),
       "utf-8"
     );
     console.log(newData);
