@@ -12,4 +12,7 @@ const ws = fs.createWriteStream(path.join(__dirname, "files", "lorem-new.txt"));
 //   console.log("read complete");
 // });
 
+/**
+ * More efficient than the rs.on listener above
+ */
 rs.pipe(ws);
