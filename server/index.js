@@ -8,6 +8,7 @@ const { logEvents, reqEventsLogger } = require("./middlewares/log-events");
 
 const subdirRouter = require("./routes/subdir");
 const rootRouter = require("./routes/root");
+const apiRouter = require("./routes/api/v1");
 
 const fsPromises = fs.promises;
 
@@ -51,6 +52,7 @@ const PORT = process.env.PORT || 3500;
 
 app.use("/", rootRouter);
 app.use("/subdir", subdirRouter);
+app.use("/api/v1", apiRouter);
 
 app.all("*", (req, res) => {
   res.status(404).sendFile(path.join(__dirname, "views", "404.html"));
