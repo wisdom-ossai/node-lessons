@@ -10,13 +10,13 @@ const logEvents = async ({ message, fileName }) => {
   console.log(logItem);
 
   try {
-    const dirExist = fs.existsSync(path.join(__dirname, "logs"));
+    const dirExist = fs.existsSync(path.join(__dirname, "..", "logs"));
 
     if (!dirExist) {
-      await fsPromises.mkdir(path.join(__dirname, "logs"));
+      await fsPromises.mkdir(path.join(__dirname, "..", "logs"));
     }
     await fsPromises.appendFile(
-      path.join(__dirname, "logs", fileName),
+      path.join(__dirname, "..", "logs", fileName),
       logItem
     );
   } catch (e) {
@@ -24,4 +24,13 @@ const logEvents = async ({ message, fileName }) => {
   }
 };
 
-module.exports = logEvents;
+const reqEventsLogger = (req, res, next) => {
+  logEvents({
+    message: `${req.method}\t${req.headers.origin}\t${req.url}`,
+    fileName: "reqLog.txt",
+  });
+  console.log(`${req.method}\t${req.path}`);
+  next();
+};
+
+module.exports = { logEvents, reqEventsLogger };
