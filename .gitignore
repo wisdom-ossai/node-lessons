@@ -1,0 +1,7 @@
+node_modules
+logs
+server/node_modules
+server/logs
+emitting-events/node_modules
+emitting-events/logs
+managing-packages/node_modules
