@@ -6,6 +6,9 @@ const cors = require("cors");
 const errorHandler = require("./middlewares/error-handler");
 const { logEvents, reqEventsLogger } = require("./middlewares/log-events");
 
+const subdirRouter = require("./routes/subdir");
+const rootRouter = require("./routes/root");
+
 const fsPromises = fs.promises;
 
 const corsWhitelist = [
@@ -42,20 +45,12 @@ app.use(express.json());
 
 // built-in middleware for serving static files.
 app.use(express.static(path.join(__dirname, "/public")));
+app.use("/subdir", express.static(path.join(__dirname, "/public")));
 
 const PORT = process.env.PORT || 3500;
 
-app.get("^/$|/index(.html)?", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "index.html"));
-});
-
-app.get("/new-page(.html)?", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "new-page.html"));
-});
-
-app.get("/old-page(.html)?", (req, res) => {
-  res.redirect(301, "/new-page");
-});
+app.use("/", rootRouter);
+app.use("/subdir", subdirRouter);
 
 app.all("*", (req, res) => {
   res.status(404).sendFile(path.join(__dirname, "views", "404.html"));
